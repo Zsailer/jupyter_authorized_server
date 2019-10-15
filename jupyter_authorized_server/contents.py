@@ -102,7 +102,7 @@ class ContentsHandler(BaseContentsHandler):
         super(ContentsHandler, self).delete(path=path)
 
 default_handlers = [
-    (r"/api/contents%s" % path_regex, ContentsHandler),
+    (r"/nbshare%s" % path_regex, ContentsHandler),
 ]
 
 

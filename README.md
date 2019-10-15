@@ -2,7 +2,7 @@
 
 An experimental project adding authorization to Jupyter's core services.
 
-Adds an `authorized` wrapper (i.e. decorator) to Jupyter Server's tornado handlers.
+Adds an `authorized` wrapper (i.e. decorator) to Jupyter Server's tornado handlers to check which actions are allowed for the `current_user`.
 
 Clone this repo;
 ```
