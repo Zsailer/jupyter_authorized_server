@@ -1,5 +1,6 @@
 
 
+
 def authorized(action, error=None):
     if not error:
         error = Exception('401: Unauthorized.')

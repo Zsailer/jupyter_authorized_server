@@ -3,24 +3,18 @@ from tornado import gen, web
 from jupyter_server.base.handlers import path_regex
 from jupyter_server.services.contents.handlers import ContentsHandler as BaseContentsHandler
 
+from jupyterhub.services.auth import HubAuthenticated
 
 from .auth import authorized
 
-class ContentsHandler(BaseContentsHandler):
+class ContentsHandler(HubAuthenticated, BaseContentsHandler):
 
-    @property
-    def authdb(self):
-        return {
-            'zsailer': ['read', 'write']
-        }
-
-    def get_current_user(self):
-        return 'zsailer'
+    # def get_current_user(self):
+    #     return 'zsailer'
 
     def user_is_authorized(self, user, action):
-        if action in self.authdb[user]:
-            return True
-        return False
+        print(f"\n\n\n\n{user} {action}\n\n\n")
+        return True
 
     @web.authenticated
     @authorized('read')
@@ -102,7 +96,7 @@ class ContentsHandler(BaseContentsHandler):
         super(ContentsHandler, self).delete(path=path)
 
 default_handlers = [
-    (r"/nbshare%s" % path_regex, ContentsHandler),
+    (r"/jhubshare%s" % path_regex, ContentsHandler),
 ]
 
 
