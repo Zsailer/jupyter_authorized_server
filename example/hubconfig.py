@@ -1,7 +1,16 @@
+from jupyterhub.auth import DummyAuthenticator
+from jupyterhub.spawner import SimpleLocalProcessSpawner
+
 c.JupyterHub.services = [
     {
         'name': 'jhubshare',
-        'url': 'http://localhost:9999',
-        'api_token': 'ec335e9339503293f83670ecb9cf3244b107b6cd1aa5c17c1d54d62e98a381d5',
+        'admin': False,
+        'url': 'http://127.0.0.1:9999',
+        'command': ['jupyter', 'authorized-server']
     }
 ]
+
+c.JupyterHub.authenticator_class = DummyAuthenticator
+c.JupyterHub.spawner_class = SimpleLocalProcessSpawner
+
+c.JupyterHub.home_dir = '{username}'
