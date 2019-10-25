@@ -1,13 +1,16 @@
 # Jupyter Server with Authorization
 
-An experimental project adding authorization to Jupyter's core services.
+An experimental project adding authorization to Jupyter's core services. This allows multiple users to access the **same** Jupyter Server.
 
 Adds an `authorized` wrapper (i.e. decorator) to Jupyter Server's tornado handlers to check which actions are allowed for the `current_user`.
 
+Currently, this project only provides Jupyter's Contents API—it acts like a shared drive. We can expand this to other Jupyter services, i.e. kernels.
 
 ## Try it out!
 
-You can try this out using JupyterHub as your authenticator. See the `/example` folder.
+`jupyter_authorized_server` can be run as a [JupyterHub Service](https://jupyterhub.readthedocs.io/en/stable/reference/services.html#services). This enables JupyterHub to be the provider of authenticated users. Authorization is (currently) pulled from a policy.csv file. In the future, we can source this information from the authenticators in JupyterHub.
+
+Run the following example from the `/example` folder and follow these steps.
 
 1. Install JupyterHub and the jupyter_authorized_server:
     ```
