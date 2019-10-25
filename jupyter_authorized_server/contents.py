@@ -104,7 +104,7 @@ class ContentsHandler(HubAuthenticated, BaseContentsHandler):
         super(ContentsHandler, self).delete(path=path)
 
 default_handlers = [
-    (r"/jhubshare%s" % path_regex, ContentsHandler),
+    (r"/contents%s" % path_regex, ContentsHandler),
 ]
 
 
