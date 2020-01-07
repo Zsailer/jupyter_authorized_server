@@ -89,7 +89,7 @@ class ContentsHandler(APIHandler):
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='contents')
     @gen.coroutine
     def get(self, path=''):
         """Return a model for a file or directory.
@@ -117,7 +117,7 @@ class ContentsHandler(APIHandler):
         self._finish_model(model, location=False)
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='contents')
     @gen.coroutine
     def patch(self, path=''):
         """PATCH renames a file or directory without re-uploading content."""
@@ -170,7 +170,7 @@ class ContentsHandler(APIHandler):
         self._finish_model(model)
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='contents')
     @gen.coroutine
     def post(self, path=''):
         """Create a new file in the specified path.
@@ -208,7 +208,7 @@ class ContentsHandler(APIHandler):
             yield self._new_untitled(path)
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='contents')
     @gen.coroutine
     def put(self, path=''):
         """Saves the file in the location specified by name and path.
@@ -234,7 +234,7 @@ class ContentsHandler(APIHandler):
             yield maybe_future(self._new_untitled(path))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='contents')
     @gen.coroutine
     def delete(self, path=''):
         """delete a file in the given path"""
@@ -248,7 +248,7 @@ class ContentsHandler(APIHandler):
 class CheckpointsHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='checkpoints')
     @gen.coroutine
     def get(self, path=''):
         """get lists checkpoints for a file"""
@@ -258,7 +258,7 @@ class CheckpointsHandler(APIHandler):
         self.finish(data)
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='checkpoints')
     @gen.coroutine
     def post(self, path=''):
         """post creates a new checkpoint"""
@@ -275,7 +275,7 @@ class CheckpointsHandler(APIHandler):
 class ModifyCheckpointsHandler(APIHandler):
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='checkpoints')
     @gen.coroutine
     def post(self, path, checkpoint_id):
         """post restores a file from a checkpoint"""
@@ -285,7 +285,7 @@ class ModifyCheckpointsHandler(APIHandler):
         self.finish()
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='checkpoints')
     @gen.coroutine
     def delete(self, path, checkpoint_id):
         """delete clears a checkpoint for a given file"""
@@ -314,7 +314,7 @@ class TrustNotebooksHandler(JupyterHandler):
     """ Handles trust/signing of notebooks """
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='trust_notebook')
     @gen.coroutine
     def post(self,path=''):
         cm = self.contents_manager

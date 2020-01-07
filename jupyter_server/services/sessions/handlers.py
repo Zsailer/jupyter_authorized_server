@@ -21,7 +21,7 @@ from jupyter_server.utils import authorized
 class SessionRootHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='sessions')
     @gen.coroutine
     def get(self):
         # Return a list of running sessions
@@ -30,7 +30,7 @@ class SessionRootHandler(APIHandler):
         self.finish(json.dumps(sessions, default=date_default))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='sessions')
     @gen.coroutine
     def post(self):
         # Creates a new session
@@ -92,7 +92,7 @@ class SessionRootHandler(APIHandler):
 class SessionHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='sessions')
     @gen.coroutine
     def get(self, session_id):
         # Returns the JSON model for a single session
@@ -101,7 +101,7 @@ class SessionHandler(APIHandler):
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='sessions')
     @gen.coroutine
     def patch(self, session_id):
         """Patch updates sessions:
@@ -155,7 +155,7 @@ class SessionHandler(APIHandler):
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='sessions')
     @gen.coroutine
     def delete(self, session_id):
         # Deletes the session with given session_id

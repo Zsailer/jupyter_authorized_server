@@ -27,7 +27,7 @@ from jupyter_server.utils import authorized
 class MainKernelHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='kernels')
     @gen.coroutine
     def get(self):
         km = self.kernel_manager
@@ -35,7 +35,7 @@ class MainKernelHandler(APIHandler):
         self.finish(json.dumps(kernels, default=date_default))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='kernels')
     @gen.coroutine
     def post(self):
         km = self.kernel_manager
@@ -58,14 +58,14 @@ class MainKernelHandler(APIHandler):
 class KernelHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='kernels')
     def get(self, kernel_id):
         km = self.kernel_manager
         model = km.kernel_model(kernel_id)
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='kernels')
     @gen.coroutine
     def delete(self, kernel_id):
         km = self.kernel_manager
@@ -77,7 +77,7 @@ class KernelHandler(APIHandler):
 class KernelActionHandler(APIHandler):
 
     @web.authenticated
-    @authorized('write')
+    @authorized('write', resource='kernels')
     @gen.coroutine
     def post(self, kernel_id, action):
         km = self.kernel_manager

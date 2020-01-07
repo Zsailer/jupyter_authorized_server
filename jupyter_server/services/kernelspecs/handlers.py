@@ -56,7 +56,7 @@ def is_kernelspec_model(spec_dict):
 class MainKernelSpecHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='kernelspecs')
     @gen.coroutine
     def get(self):
         ksm = self.kernel_spec_manager
@@ -82,7 +82,7 @@ class MainKernelSpecHandler(APIHandler):
 class KernelSpecHandler(APIHandler):
 
     @web.authenticated
-    @authorized('read')
+    @authorized('read', resource='kernelspecs')
     @gen.coroutine
     def get(self, kernel_name):
         ksm = self.kernel_spec_manager
