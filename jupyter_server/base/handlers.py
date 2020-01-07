@@ -188,8 +188,8 @@ class AuthorizedHandlerMixin:
     """A mixin class for Tornado request handlers that checks whether
     the current user is authorized to execute the current action.
     """
-    def user_is_authorized(self, user, action):
-        """"""
+    def user_is_authorized(self, user, action, resource):
+        """Check is `user` is authorized to do `action` on given `resource`."""
         return True
 
 
