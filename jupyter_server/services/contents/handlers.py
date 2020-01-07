@@ -17,6 +17,7 @@ from jupyter_server.base.handlers import (
     JupyterHandler, APIHandler, path_regex,
 )
 
+from jupyter_server.auth.authorization import authorized
 
 def validate_model(model, expect_content):
     """
@@ -88,6 +89,7 @@ class ContentsHandler(APIHandler):
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
+    @authorized('read')
     @gen.coroutine
     def get(self, path=''):
         """Return a model for a file or directory.
@@ -107,7 +109,7 @@ class ContentsHandler(APIHandler):
         if content not in {'0', '1'}:
             raise web.HTTPError(400, u'Content %r is invalid' % content)
         content = int(content)
-        
+
         model = yield maybe_future(self.contents_manager.get(
             path=path, type=type, format=format, content=content,
         ))
@@ -115,6 +117,7 @@ class ContentsHandler(APIHandler):
         self._finish_model(model, location=False)
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def patch(self, path=''):
         """PATCH renames a file or directory without re-uploading content."""
@@ -161,12 +164,13 @@ class ContentsHandler(APIHandler):
         """Save an existing file."""
         chunk = model.get("chunk", None)
         if not chunk or chunk == -1:  # Avoid tedious log information
-            self.log.info(u"Saving file at %s", path)  
+            self.log.info(u"Saving file at %s", path)
         model = yield maybe_future(self.contents_manager.save(model, path))
         validate_model(model, expect_content=False)
         self._finish_model(model)
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self, path=''):
         """Create a new file in the specified path.
@@ -204,6 +208,7 @@ class ContentsHandler(APIHandler):
             yield self._new_untitled(path)
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def put(self, path=''):
         """Saves the file in the location specified by name and path.
@@ -229,6 +234,7 @@ class ContentsHandler(APIHandler):
             yield maybe_future(self._new_untitled(path))
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def delete(self, path=''):
         """delete a file in the given path"""
@@ -242,6 +248,7 @@ class ContentsHandler(APIHandler):
 class CheckpointsHandler(APIHandler):
 
     @web.authenticated
+    @authorized('read')
     @gen.coroutine
     def get(self, path=''):
         """get lists checkpoints for a file"""
@@ -251,6 +258,7 @@ class CheckpointsHandler(APIHandler):
         self.finish(data)
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self, path=''):
         """post creates a new checkpoint"""
@@ -267,6 +275,7 @@ class CheckpointsHandler(APIHandler):
 class ModifyCheckpointsHandler(APIHandler):
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self, path, checkpoint_id):
         """post restores a file from a checkpoint"""
@@ -276,6 +285,7 @@ class ModifyCheckpointsHandler(APIHandler):
         self.finish()
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def delete(self, path, checkpoint_id):
         """delete clears a checkpoint for a given file"""
@@ -304,12 +314,14 @@ class TrustNotebooksHandler(JupyterHandler):
     """ Handles trust/signing of notebooks """
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self,path=''):
         cm = self.contents_manager
         yield maybe_future(cm.trust_notebook(path))
         self.set_status(201)
         self.finish()
+
 #-----------------------------------------------------------------------------
 # URL to handler mappings
 #-----------------------------------------------------------------------------
