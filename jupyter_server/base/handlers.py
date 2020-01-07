@@ -190,7 +190,7 @@ class AuthorizedHandlerMixin:
     """
     def user_is_authorized(self, user, action):
         """"""
-        return False
+        return True
 
 
 class JupyterHandler(AuthenticatedHandler, AuthorizedHandlerMixin):
