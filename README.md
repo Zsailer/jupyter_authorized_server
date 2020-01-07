@@ -4,28 +4,14 @@ An experimental project adding authorization to Jupyter's core services. This al
 
 Adds an `authorized` wrapper (i.e. decorator) to Jupyter Server's tornado handlers to check which actions are allowed for the `current_user`.
 
-Currently, this project only provides Jupyter's Contents API—it acts like a shared drive. We can expand this to other Jupyter services, i.e. kernels.
+The server's authorization layer is highly configurable. I don't make many decisions for you—keeping it as general as possible.
 
-## Try it out!
+## How?
 
-`jupyter_authorized_server` can be run as a [JupyterHub Service](https://jupyterhub.readthedocs.io/en/stable/reference/services.html#services). This enables JupyterHub to be the provider of authenticated users. Authorization is (currently) pulled from a policy.csv file. In the future, we can source this information from the authenticators in JupyterHub.
+Each handler in the Jupyter Server checks whether the current user is authorized the make the current request. This is determined by an `user_is_authorized` method in each handler. By default, this evaluates to `True`. You can patch this method in Jupyter Server's base handler, `JupyterHandler`, to implement your own authorization method.
 
-Run the following example from the `/example` folder and follow these steps.
+There are three types of permissions: "read", "write" and "execute".
 
-1. Install JupyterHub and the jupyter_authorized_server:
-    ```
-    pip install jupyterhub
-    git clone https://github.com/Zsailer/jupyter_authorized_server
-    cd jupyter_authorized_server
-    pip install -e .
-    ```
-2. Navigate to the `/example` folder
-3. Run `sh hub.sh`.
-4. Open your browser window, and go to the hub's homepage: http://localhost:8000
-5. Sign in as `alice`.
-6. Visit http://localhost:8000/services/jhubshare/contents/hubconfig.py
-    You should see the server response with a JSON blog that contains the contents of the `hubconfig.py` file.
-7. Return to the hub's homepage: http://localhost:8000/
-8. Sign out of `alice`'s account and sign-in as `bob`.
-9. Visit http://localhost:8000/services/jhubshare/contents/hubconfig.py
-    You should see an `Unauthorized` error.
+* "read" refers to all `GET` and `HEAD` requests.
+* "write" refers to all `PUT`, `PATCH`, `POST`, and `DELETE` requests.
+* "execute" refers to all requests to ZMQ/Websocket channels.
