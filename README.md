@@ -15,3 +15,14 @@ There are three types of permissions: "read", "write" and "execute".
 * "read" refers to all `GET` and `HEAD` requests.
 * "write" refers to all `PUT`, `PATCH`, `POST`, and `DELETE` requests.
 * "execute" refers to all requests to ZMQ/Websocket channels.
+
+## Install
+
+Clone from source, change into the base directory, and install using `pip`:
+```
+pip install -e .
+```
+
+# Basic Example
+
+Once you've installed the authorized server, try out the example in the `example/` directory. You'll need [NBClassic](https://github.com/Zsailer/nbclassic), a classic Jupyter Notebook frontend for Jupyter Server, to get test it out. Read the README there for more details.
