@@ -16,7 +16,7 @@ from tornado import web, gen
 from ...base.handlers import APIHandler
 from ...utils import maybe_future, url_path_join, url_unescape
 
-from jupyter_server.auth.authorization import authorized
+from jupyter_server.utils import authorized
 
 def kernelspec_model(handler, name, spec_dict, resource_dir):
     """Load a KernelSpec by name and return the REST API model"""

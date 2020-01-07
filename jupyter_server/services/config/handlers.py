@@ -11,7 +11,7 @@ from tornado import web
 from ipython_genutils.py3compat import PY3
 from ...base.handlers import APIHandler
 
-from jupyter_server.auth.authorization import authorized
+from jupyter_server.utils import authorized
 
 
 class ConfigHandler(APIHandler):

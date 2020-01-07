@@ -15,7 +15,7 @@ from jupyter_client.jsonutil import date_default
 from jupyter_server.utils import maybe_future, url_path_join
 from jupyter_client.kernelspec import NoSuchKernel
 
-from jupyter_server.auth.authorization import authorized
+from jupyter_server.utils import authorized
 
 
 class SessionRootHandler(APIHandler):

@@ -22,11 +22,12 @@ from jupyter_server.utils import url_path_join, url_escape, maybe_future
 from ...base.handlers import APIHandler
 from ...base.zmqhandlers import AuthenticatedZMQStreamHandler, deserialize_binary_message
 
-
+from jupyter_server.utils import authorized
 
 class MainKernelHandler(APIHandler):
 
     @web.authenticated
+    @authorized('read')
     @gen.coroutine
     def get(self):
         km = self.kernel_manager
@@ -34,6 +35,7 @@ class MainKernelHandler(APIHandler):
         self.finish(json.dumps(kernels, default=date_default))
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self):
         km = self.kernel_manager
@@ -56,12 +58,14 @@ class MainKernelHandler(APIHandler):
 class KernelHandler(APIHandler):
 
     @web.authenticated
+    @authorized('read')
     def get(self, kernel_id):
         km = self.kernel_manager
         model = km.kernel_model(kernel_id)
         self.finish(json.dumps(model, default=date_default))
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def delete(self, kernel_id):
         km = self.kernel_manager
@@ -73,6 +77,7 @@ class KernelHandler(APIHandler):
 class KernelActionHandler(APIHandler):
 
     @web.authenticated
+    @authorized('write')
     @gen.coroutine
     def post(self, kernel_id, action):
         km = self.kernel_manager

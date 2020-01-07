@@ -8,11 +8,13 @@ from tornado import web
 from ..base.handlers import JupyterHandler, path_regex
 from ..utils import url_escape
 
+from jupyter_server.utils import authorized
 
 class EditorHandler(JupyterHandler):
     """Render the text editor interface."""
 
     @web.authenticated
+    @authorized('read')
     def get(self, path):
         path = path.strip('/')
         if not self.contents_manager.file_exists(path):

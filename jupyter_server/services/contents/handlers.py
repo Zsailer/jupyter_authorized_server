@@ -17,7 +17,7 @@ from jupyter_server.base.handlers import (
     JupyterHandler, APIHandler, path_regex,
 )
 
-from jupyter_server.auth.authorization import authorized
+from jupyter_server.utils import authorized
 
 def validate_model(model, expect_content):
     """
